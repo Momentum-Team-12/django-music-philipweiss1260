@@ -14,9 +14,30 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf import settings
 from django.urls import path, include
+from albums import views as albums_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('__debug__/', include('debug_toolbar.urls')),
+    path('', albums_views.list_albums,name='list_albums'),
+    path('albums/add/', albums_views.add_album, name='add_album'),
+    path('albums/<int:pk>/edit/',
+         albums_views.edit_album,
+         name='edit_album'),
+    path('albums/<int:pk>/delete/',
+         albums_views.delete_album,
+         name='delete_album'),
+    path('albums/<int:pk>/', albums_views.view_album, name='view_album'),
+    path('albums/<int:pk>/notes', albums_views.add_note, name='add_note'),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+
+        # NOTE TO SELF - this might make line 23,with debug_toolbar redundant, or wonky
+        # For django versions before 2.0:
+        # url(r'^__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns

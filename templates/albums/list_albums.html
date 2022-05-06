@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>All Albums</h1>
+
+<p><a href="{% url 'add_album' %}">Add New Album</a></p>
+
+<div class="flex flex-wrap">
+  {% for album in albums %}
+  <div class="w-33 pa3">
+    <h2>{{ album.name }}</h2>
+
+    <div class="flex">
+      <div class="pr2"><i class="icofont-location-pin"></i></div>
+      <div>
+        {{ album.address_1 }}<br />
+        {% if album.address_2 %}
+          {{ album.address_2 }}<br />
+        {% endif %}
+        {{ album.city }},
+      </div>
+    </div>
+
+    {% if album.birth_date %}
+    <div class="flex">
+      <div class="pr2"><i class="icofont-birthday"></i></div>
+      <div>{{ album.birth_date }}</div>
+    </div>
+    {% endif %}
+
+    
+
+    <p>
+      <a href="{% url 'view_album' pk=album.pk %}">View Album</a><br>
+      <a href="{% url 'edit_album' pk=album.pk %}">Edit Album</a><br>    
+      <a class="red" href="{% url 'delete_album' pk=album.pk %}">Delete Album</a>
+    </p>
+  </div>
+  {% endfor %}
+</div>  
+{% endblock %}
