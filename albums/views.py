@@ -12,9 +12,9 @@ def list_albums(request):
 
 def add_album(request):
     if request.method == 'GET':
-        form = albumForm()
+        form = AlbumForm()
     else:
-        form = albumForm(data=request.POST)
+        form = AlbumForm(data=request.POST)
         if form.is_valid():
             form.save()
             return redirect(to='list_albums')
@@ -23,11 +23,11 @@ def add_album(request):
 
 
 def edit_album(request, pk):
-    album = get_object_or_404(album, pk=pk)
+    album = get_object_or_404(Album, pk=pk)
     if request.method == 'GET':
-        form = albumForm(instance=album)
+        form = AlbumForm(instance=album)
     else:
-        form = albumForm(data=request.POST, instance=album)
+        form = AlbumForm(data=request.POST, instance=album)
         if form.is_valid():
             form.save()
             return redirect(to='list_albums')
@@ -38,7 +38,7 @@ def edit_album(request, pk):
     })
 
 def add_note(request, pk):
-    album = get_object_or_404(album, pk=pk)
+    album = get_object_or_404(Album, pk=pk)
     if request.method == 'GET':
         form = NoteForm()
     else:
@@ -56,7 +56,7 @@ def add_note(request, pk):
 
 
 def delete_album(request, pk):
-    album = get_object_or_404(album, pk=pk)
+    album = get_object_or_404(Album, pk=pk)
     if request.method == 'POST':
         album.delete()
         return redirect(to='list_albums')
@@ -65,6 +65,6 @@ def delete_album(request, pk):
                   {"album": album})
 
 def view_album(request, pk):
-    album = get_object_or_404(album, pk=pk)
+    album = get_object_or_404(Album, pk=pk)
     return render(request, 'albums/view_album.html', {"album": album})
     
